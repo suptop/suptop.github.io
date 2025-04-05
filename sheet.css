@@ -1,5 +1,19 @@
 /* 前言*/
 /*————————————————————全局通用————————————————————*/
+h1.chapter-title {
+  text-align: center;
+  font-size: 1.8em;
+  font-family: "小标宋";
+  color: #38270b;
+  margin: 00% 0 2em 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.9); /* 半透明背景防止文字穿透 */
+  z-index: 999;
+  padding: 15px 0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
 
 h2.chapter-title {
   text-align: center;
