@@ -13,6 +13,25 @@
       white 20px,          /* 白色开始 */
       white 40px           /* 白色宽度（调整以避免间断） */
     );
+
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .image-container {
+    width: 300px;
+    height: 200px;
+    background: url('https://via.placeholder.com/300x200') no-repeat center/cover;
+    border: 2px solid #000;
+    border-bottom: none; /* 让旗帜和图片无缝连接 */
+  }
+
+  .flags-row {
+    display: flex;
+    gap: 0px;  /* 无间距紧贴 */
+    border-top: 2px solid #000; /* 衔接效果 */
   }
 
   .flag-container {
@@ -20,7 +39,6 @@
     width: 20px;
     height: 80px;
     overflow: visible;
-    margin: 50px;
   }
 
   .flag {
@@ -56,7 +74,7 @@
   }
 
   .flag-text {
-    z-index: 10; /* 添加 z-index 属性，使其显示在顶层 */
+    z-index: 10;
     position: absolute;
     top: 0;
     left: 50%;
@@ -101,9 +119,15 @@
 
 <body>
 
-<div class="flag-container">
-  <div class="flag">
-    <div class="flag-text">绿色</div>
+<div class="wrapper">
+  <div class="image-container"></div>
+
+  <div class="flags-row">
+    <div class="flag-container"><div class="flag"><div class="flag-text">内容1</div></div></div>
+    <div class="flag-container"><div class="flag"><div class="flag-text">内容2</div></div></div>
+    <div class="flag-container"><div class="flag"><div class="flag-text">内容3</div></div></div>
+    <div class="flag-container"><div class="flag"><div class="flag-text">内容4</div></div></div>
+    <div class="flag-container"><div class="flag"><div class="flag-text">内容5</div></div></div>
   </div>
 </div>
 
