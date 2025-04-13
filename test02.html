@@ -2,93 +2,120 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8" />
-  <title>多行书架展示</title>
+  <title>多行书架展示 + 用户信息</title>
   <style>
-    /* 重置基础样式，去除默认边距和内边距 */
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
 
-    /* 页面背景与字体 */
     body {
-      background: #f8f5ee;
       font-family: sans-serif;
       height: 100vh;
-      overflow: hidden; /* 禁止页面本身滚动 */
+      overflow: hidden;
+      display: flex;
     }
 
-    /* 整个书架区域，可垂直滚动 */
+    /* 左侧书架区域 */
     .bookshelf-wrapper {
-      height: 100vh;
+      flex: 1;
       padding: 40px;
       overflow-y: auto;
+      background: #f8f5ee;
     }
 
-    /* 每层书架横向排布，可换行形成多行 */
     .shelf {
       display: flex;
       flex-wrap: wrap;
-      row-gap: 40px;           /* 行间距 */
-      position: relative;      /* 供封面绝对定位 */
-      z-index: 1;
+      row-gap: 40px;
     }
 
-    /* 每本书的容器：独立视角、可展开 */
     .book-container {
       position: relative;
       cursor: pointer;
-      perspective: 1000px;     /* 增强视觉层次感 */
-      overflow: visible;       /* 让展开的封面不被裁切 */
-      z-index: 1;
+      perspective: 1000px;
+      overflow: visible;
     }
 
-    /* 书脊样式：垂直排文字 + 渐变背景 */
     .book-spine {
       width: 40px;
       height: 200px;
       background: linear-gradient(to bottom, #444, #666);
       color: white;
-      writing-mode: vertical-rl; /* 垂直文字方向 */
+      writing-mode: vertical-rl;
       text-align: center;
       padding: 5px;
       font-size: 14px;
       border-radius: 4px;
-      z-index: 1; 
-
     }
 
-    /* 封面样式（默认隐藏） */
-    .book-cover {
+    /* 右侧菜单栏 */
+    .sidebar {
+      width: 220px;
+      background: #ffffff;
+      border-left: 1px solid #ddd;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .sidebar h2 {
+      font-size: 16px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 4px;
+    }
+
+    .sidebar .user {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .sidebar .user img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+    }
+
+    .sidebar .user p {
+      margin-top: 8px;
+      font-weight: bold;
+    }
+
+    .sidebar .menu-section {
+      margin-bottom: 20px;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding-left: 10px;
+    }
+
+    .sidebar li {
+      margin: 6px 0;
+      cursor: pointer;
+      color: #333;
+    }
+
+    .sidebar li:hover {
+      text-decoration: underline;
+    }
+
+    /* 浮动封面 */
+    #floatingCover {
       position: absolute;
-      top: 0;
-      left: 0;
+      display: none;
       width: 150px;
       height: 200px;
       background-size: cover;
       background-position: center;
       border-radius: 4px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-      transform: translateX(0) scale(0.95);
-      opacity: 0;
-      transition: transform 0.6s ease, opacity 0.6s ease;
-      z-index: 999; /* 保证浮在最上层 */
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      z-index: 9999;
+      pointer-events: none;
     }
 
-    /* 鼠标悬停时：书脊旋转隐藏，封面展开显示 */
-    .book-container:hover .book-spine {
-      transform: rotateY(-30deg);
-      opacity: 80%;
-    }
-
-    .book-container:hover .book-cover {
-      transform: translateX(50px) scale(1);
-      opacity: 1;
-      z-index: 1;
-    }
-
-    /* 弹窗：阅读内容展示框 */
+    /* 弹窗阅读器 */
     .modal {
       position: fixed;
       top: 50%;
@@ -100,11 +127,10 @@
       padding: 20px;
       border-radius: 10px;
       box-shadow: 0 0 30px rgba(0,0,0,0.3);
-      display: none; /* 默认隐藏 */
+      display: none;
       z-index: 1000;
     }
 
-    /* 显示弹窗 */
     .modal.active {
       display: block;
     }
@@ -123,14 +149,49 @@
   </style>
 </head>
 <body>
-  <!-- 书架外层容器 -->
+  <!-- 左侧书架 -->
   <div class="bookshelf-wrapper">
-    <div class="shelf" id="shelf">
-      <!-- JavaScript 动态生成书籍 -->
+    <div class="shelf" id="shelf"></div>
+  </div>
+
+  <!-- 右侧侧边栏 -->
+  <div class="sidebar">
+    <div class="user">
+      <img src="https://i.pravatar.cc/100?u=me" alt="头像">
+      <p>用户名</p>
+    </div>
+
+    <div class="menu-section">
+      <h2>书架分类</h2>
+      <ul>
+        <li>全部</li>
+        <li>小说</li>
+        <li>漫画</li>
+        <li>工具书</li>
+      </ul>
+    </div>
+
+    <div class="menu-section">
+      <h2>最近阅读</h2>
+      <ul>
+        <li>书名 12</li>
+        <li>书名 27</li>
+      </ul>
+    </div>
+
+    <div class="menu-section">
+      <h2>阅读统计</h2>
+      <ul>
+        <li>今日阅读：20分钟</li>
+        <li>本周累计：2小时</li>
+      </ul>
     </div>
   </div>
 
-  <!-- 弹窗展示 -->
+  <!-- 浮动封面 -->
+  <div id="floatingCover"></div>
+
+  <!-- 弹窗阅读器 -->
   <div class="modal" id="readerModal">
     <div class="close-btn" onclick="closeModal()">✖</div>
     <h2 id="readerTitle">书名</h2>
@@ -139,24 +200,34 @@
 
   <script>
     const shelf = document.getElementById('shelf');
-    const totalBooks = 42; // 书本数量
+    const floatingCover = document.getElementById('floatingCover');
+    const totalBooks = 36;
 
     for (let i = 1; i <= totalBooks; i++) {
       const container = document.createElement('div');
       container.className = 'book-container';
-      container.onclick = () => openBook(`书名 ${i}`);
+      const title = `书名 ${i}`;
+      const coverUrl = `https://picsum.photos/seed/book${i}/200/300`;
 
       const spine = document.createElement('div');
       spine.className = 'book-spine';
-      spine.innerText = `书名 ${i}`;
+      spine.innerText = title;
 
-      const cover = document.createElement('div');
-      cover.className = 'book-cover';
-      // 可替换成本地图片路径
-      cover.style.backgroundImage = `url('https://picsum.photos/seed/book${i}/200/300')`;
+      container.addEventListener('mouseenter', () => {
+        const rect = container.getBoundingClientRect();
+        floatingCover.style.backgroundImage = `url('${coverUrl}')`;
+        floatingCover.style.left = (rect.left + 50) + 'px';
+        floatingCover.style.top = (rect.top + window.scrollY) + 'px';
+        floatingCover.style.display = 'block';
+      });
+
+      container.addEventListener('mouseleave', () => {
+        floatingCover.style.display = 'none';
+      });
+
+      container.addEventListener('click', () => openBook(title));
 
       container.appendChild(spine);
-      container.appendChild(cover);
       shelf.appendChild(container);
     }
 
