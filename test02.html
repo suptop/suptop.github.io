@@ -2,58 +2,104 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8" />
-  <title>多行书架展示 + 用户信息</title>
+  <title>多层书架展示</title>
   <style>
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
-
     body {
-      font-family: sans-serif;
-      height: 100vh;
-      overflow: hidden;
       display: flex;
+      height: 100vh;
+      font-family: sans-serif;
+      overflow: hidden;
     }
 
-    /* 左侧书架区域 */
     .bookshelf-wrapper {
       flex: 1;
-      padding: 40px;
+      padding: 20px;
       overflow-y: auto;
-      background: #f8f5ee;
+      background: #f3f1eb;
+    }
+
+    .shelf-layer {
+      margin-bottom: 40px;
+    }
+
+    .shelf-layer h3 {
+      margin-bottom: 10px;
+      font-size: 18px;
+      color: #333;
+      border-left: 4px solid #aaa;
+      padding-left: 10px;
     }
 
     .shelf {
       display: flex;
       flex-wrap: wrap;
-      row-gap: 40px;
+      gap: 0;
     }
 
-    .book-container {
+    .book-container, .game-container {
       position: relative;
       cursor: pointer;
-      perspective: 1000px;
-      overflow: visible;
     }
 
     .book-spine {
       width: 40px;
       height: 200px;
-      background: linear-gradient(to bottom, #444, #666);
-      color: white;
+      background: linear-gradient(to bottom, #555, #777);
       writing-mode: vertical-rl;
+      color: #fff;
       text-align: center;
       padding: 5px;
       font-size: 14px;
       border-radius: 4px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      z-index: 1;
     }
 
-    /* 右侧菜单栏 */
+    .game-spine {
+      width: 40px;
+      height: 140px;
+      background: linear-gradient(to bottom, #224488, #4466aa);
+      writing-mode: vertical-rl;
+      color: #fff;
+      text-align: center;
+      padding: 5px;
+      font-size: 13px;
+      border-radius: 4px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      z-index: 1;
+    }
+
+    .book-cover, .game-cover {
+      position: absolute;
+      top: 0;
+      left: 40px;
+      width: 160px;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      border-radius: 4px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      opacity: 0;
+      transform: scaleX(0.8);
+      transform-origin: left;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      z-index: 10;
+    }
+
+    .book-container:hover .book-cover,
+    .game-container:hover .game-cover {
+      opacity: 1;
+      transform: scaleX(1);
+    }
+
     .sidebar {
       width: 220px;
-      background: #ffffff;
+      background: #fff;
       border-left: 1px solid #ddd;
       padding: 20px;
       overflow-y: auto;
@@ -100,61 +146,20 @@
     .sidebar li:hover {
       text-decoration: underline;
     }
-
-    /* 浮动封面 */
-    #floatingCover {
-      position: absolute;
-      display: none;
-      width: 150px;
-      height: 200px;
-      background-size: cover;
-      background-position: center;
-      border-radius: 4px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-      z-index: 9999;
-      pointer-events: none;
-    }
-
-    /* 弹窗阅读器 */
-    .modal {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 70%;
-      max-width: 600px;
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 30px rgba(0,0,0,0.3);
-      display: none;
-      z-index: 1000;
-    }
-
-    .modal.active {
-      display: block;
-    }
-
-    .modal h2 {
-      margin-bottom: 10px;
-    }
-
-    .modal .close-btn {
-      position: absolute;
-      top: 10px;
-      right: 20px;
-      font-size: 20px;
-      cursor: pointer;
-    }
   </style>
 </head>
 <body>
-  <!-- 左侧书架 -->
   <div class="bookshelf-wrapper">
-    <div class="shelf" id="shelf"></div>
+    <div class="shelf-layer">
+      <h3>📚 图书区</h3>
+      <div class="shelf" id="bookShelf"></div>
+    </div>
+    <div class="shelf-layer">
+      <h3>🎮 游戏盒区</h3>
+      <div class="shelf" id="gameShelf"></div>
+    </div>
   </div>
 
-  <!-- 右侧侧边栏 -->
   <div class="sidebar">
     <div class="user">
       <img src="https://i.pravatar.cc/100?u=me" alt="头像">
@@ -174,70 +179,50 @@
     <div class="menu-section">
       <h2>最近阅读</h2>
       <ul>
-        <li>书名 12</li>
-        <li>书名 27</li>
+        <li>书名 5</li>
+        <li>书名 9</li>
       </ul>
     </div>
 
     <div class="menu-section">
       <h2>阅读统计</h2>
       <ul>
-        <li>今日阅读：20分钟</li>
-        <li>本周累计：2小时</li>
+        <li>今日阅读：15分钟</li>
+        <li>本周：1小时45分</li>
       </ul>
     </div>
   </div>
 
-  <!-- 浮动封面 -->
-  <div id="floatingCover"></div>
-
-  <!-- 弹窗阅读器 -->
-  <div class="modal" id="readerModal">
-    <div class="close-btn" onclick="closeModal()">✖</div>
-    <h2 id="readerTitle">书名</h2>
-    <p>这里是《书名》的内容预览。你可以在这里嵌入章节、文字、或跳转链接。</p>
-  </div>
-
   <script>
-    const shelf = document.getElementById('shelf');
-    const floatingCover = document.getElementById('floatingCover');
-    const totalBooks = 36;
+    const bookShelf = document.getElementById('bookShelf');
+    const gameShelf = document.getElementById('gameShelf');
 
-    for (let i = 1; i <= totalBooks; i++) {
+    for (let i = 1; i <= 15; i++) {
       const container = document.createElement('div');
       container.className = 'book-container';
-      const title = `书名 ${i}`;
-      const coverUrl = `https://picsum.photos/seed/book${i}/200/300`;
-
       const spine = document.createElement('div');
       spine.className = 'book-spine';
-      spine.innerText = title;
-
-      container.addEventListener('mouseenter', () => {
-        const rect = container.getBoundingClientRect();
-        floatingCover.style.backgroundImage = `url('${coverUrl}')`;
-        floatingCover.style.left = (rect.left + 50) + 'px';
-        floatingCover.style.top = (rect.top + window.scrollY) + 'px';
-        floatingCover.style.display = 'block';
-      });
-
-      container.addEventListener('mouseleave', () => {
-        floatingCover.style.display = 'none';
-      });
-
-      container.addEventListener('click', () => openBook(title));
-
+      spine.innerText = `书名 ${i}`;
+      const cover = document.createElement('div');
+      cover.className = 'book-cover';
+      cover.style.backgroundImage = `url('https://picsum.photos/160/200?random=${i}')`;
       container.appendChild(spine);
-      shelf.appendChild(container);
+      container.appendChild(cover);
+      bookShelf.appendChild(container);
     }
 
-    function openBook(title) {
-      document.getElementById('readerTitle').innerText = title;
-      document.getElementById('readerModal').classList.add('active');
-    }
-
-    function closeModal() {
-      document.getElementById('readerModal').classList.remove('active');
+    for (let i = 1; i <= 10; i++) {
+      const container = document.createElement('div');
+      container.className = 'game-container';
+      const spine = document.createElement('div');
+      spine.className = 'game-spine';
+      spine.innerText = `游戏 ${i}`;
+      const cover = document.createElement('div');
+      cover.className = 'game-cover';
+      cover.style.backgroundImage = `url('https://picsum.photos/160/140?grayscale&random=${i+100}')`;
+      container.appendChild(spine);
+      container.appendChild(cover);
+      gameShelf.appendChild(container);
     }
   </script>
 </body>
