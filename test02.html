@@ -14,6 +14,7 @@
       height: 100vh;
       font-family: sans-serif;
       overflow: hidden;
+      position: relative;
     }
 
     .bookshelf-wrapper {
@@ -38,10 +39,10 @@
     .shelf {
       display: flex;
       flex-wrap: wrap;
-      gap: 0;
+      gap: 1px;
     }
 
-    .book-container, .game-container {
+    .book-container, .game-container, .movie-container {
       position: relative;
       cursor: pointer;
     }
@@ -56,7 +57,6 @@
       padding: 5px;
       font-size: 14px;
       border-radius: 4px;
-      transition: transform 0.3s ease, opacity 0.3s ease;
       z-index: 1;
     }
 
@@ -70,31 +70,20 @@
       padding: 5px;
       font-size: 13px;
       border-radius: 4px;
-      transition: transform 0.3s ease, opacity 0.3s ease;
       z-index: 1;
     }
 
-    .book-cover, .game-cover {
-      position: absolute;
-      top: 0;
-      left: 40px;
-      width: 160px;
-      height: 100%;
-      background-size: cover;
-      background-position: center;
+    .movie-spine {
+      width: 40px;
+      height: 120px;
+      background: linear-gradient(to bottom, #880000, #bb3333);
+      writing-mode: vertical-rl;
+      color: #fff;
+      text-align: center;
+      padding: 5px;
+      font-size: 13px;
       border-radius: 4px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-      opacity: 0;
-      transform: scaleX(0.8);
-      transform-origin: left;
-      transition: transform 0.3s ease, opacity 0.3s ease;
-      z-index: 10;
-    }
-
-    .book-container:hover .book-cover,
-    .game-container:hover .game-cover {
-      opacity: 1;
-      transform: scaleX(1);
+      z-index: 1;
     }
 
     .sidebar {
@@ -103,6 +92,7 @@
       border-left: 1px solid #ddd;
       padding: 20px;
       overflow-y: auto;
+      z-index: 1;
     }
 
     .sidebar h2 {
@@ -146,6 +136,20 @@
     .sidebar li:hover {
       text-decoration: underline;
     }
+
+    .hover-cover {
+      position: absolute;
+      width: 160px;
+      background-size: cover;
+      background-position: center;
+      border-radius: 4px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      opacity: 0;
+      pointer-events: none;
+      transform-origin: right center;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      z-index: 9999;
+    }
   </style>
 </head>
 <body>
@@ -157,6 +161,10 @@
     <div class="shelf-layer">
       <h3>🎮 游戏盒区</h3>
       <div class="shelf" id="gameShelf"></div>
+    </div>
+    <div class="shelf-layer">
+      <h3>🎬 电影区</h3>
+      <div class="shelf" id="movieShelf"></div>
     </div>
   </div>
 
@@ -193,36 +201,47 @@
     </div>
   </div>
 
+  <div id="hoverCover" class="hover-cover"></div>
+
   <script>
     const bookShelf = document.getElementById('bookShelf');
     const gameShelf = document.getElementById('gameShelf');
+    const movieShelf = document.getElementById('movieShelf');
+    const hoverCover = document.getElementById('hoverCover');
+
+    function createItem(container, className, spineText, coverUrl, coverHeight) {
+      const item = document.createElement('div');
+      item.className = className + '-container';
+      const spine = document.createElement('div');
+      spine.className = className + '-spine';
+      spine.innerText = spineText;
+      item.appendChild(spine);
+      item.addEventListener('mouseenter', (e) => {
+        const rect = e.target.getBoundingClientRect();
+        hoverCover.style.backgroundImage = `url('${coverUrl}')`;
+        hoverCover.style.height = coverHeight + 'px';
+        hoverCover.style.left = rect.right + 10 + 'px';
+        hoverCover.style.top = rect.top + 'px';
+        hoverCover.style.opacity = '1';
+        hoverCover.style.transform = 'scaleX(1)';
+      });
+      item.addEventListener('mouseleave', () => {
+        hoverCover.style.opacity = '0';
+        hoverCover.style.transform = 'scaleX(0.8)';
+      });
+      container.appendChild(item);
+    }
 
     for (let i = 1; i <= 15; i++) {
-      const container = document.createElement('div');
-      container.className = 'book-container';
-      const spine = document.createElement('div');
-      spine.className = 'book-spine';
-      spine.innerText = `书名 ${i}`;
-      const cover = document.createElement('div');
-      cover.className = 'book-cover';
-      cover.style.backgroundImage = `url('https://picsum.photos/160/200?random=${i}')`;
-      container.appendChild(spine);
-      container.appendChild(cover);
-      bookShelf.appendChild(container);
+      createItem(bookShelf, 'book', `书名 ${i}`, `https://picsum.photos/160/200?random=${i}`, 200);
     }
 
     for (let i = 1; i <= 10; i++) {
-      const container = document.createElement('div');
-      container.className = 'game-container';
-      const spine = document.createElement('div');
-      spine.className = 'game-spine';
-      spine.innerText = `游戏 ${i}`;
-      const cover = document.createElement('div');
-      cover.className = 'game-cover';
-      cover.style.backgroundImage = `url('https://picsum.photos/160/140?grayscale&random=${i+100}')`;
-      container.appendChild(spine);
-      container.appendChild(cover);
-      gameShelf.appendChild(container);
+      createItem(gameShelf, 'game', `游戏 ${i}`, `https://picsum.photos/160/140?grayscale&random=${i+100}`, 140);
+    }
+
+    for (let i = 1; i <= 8; i++) {
+      createItem(movieShelf, 'movie', `电影 ${i}`, `https://picsum.photos/160/120?blur&random=${i+200}`, 120);
     }
   </script>
 </body>
