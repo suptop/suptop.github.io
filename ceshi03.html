@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>多层书架展示</title>
+    <link rel="stylesheet" href="style.css" />
+
+    <style>
+        * {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+        }
+        body {
+          display: flex;
+          height: 100vh;
+          font-family: sans-serif;
+          overflow: hidden;
+          position: relative;
+        }
+        .bookshelf-wrapper {
+          flex: 1;
+          padding: 20px;
+          overflow-y: auto;
+          background: #f3f1eb;
+        }
+        .shelf-layer {
+          margin-bottom: 40px;
+        }
+        .shelf-layer h3 {
+          margin-bottom: 10px;
+          font-size: 18px;
+          color: #333;
+          border-left: 4px solid #aaa;
+          padding-left: 10px;
+        }
+        .shelf {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1px;
+        }
+        .book-container, .manga-container, .tool-container,
+        .game-container, .bluray-container, .tape-container {
+          position: relative;
+          cursor: pointer;
+        }
+        .book-spine {
+          width: 40px;
+          height: 200px;
+          background: linear-gradient(to bottom, #555, #777);
+          writing-mode: vertical-rl;
+          color: #fff;
+          text-align: center;
+          padding: 5px;
+          font-size: 14px;
+          border-radius: 4px;
+          z-index: 1;
+        }
+        .manga-spine {
+          width: 40px;
+          height: 200px;
+          background: linear-gradient(to bottom, #c0392b, #e74c3c);
+          writing-mode: vertical-rl;
+          color: #fff;
+          text-align: center;
+          padding: 5px;
+          font-size: 14px;
+          border-radius: 4px;
+          z-index: 1;
+        }
+        .tool-spine {
+          width: 40px;
+          height: 200px;
+          background: linear-gradient(to bottom, #2c3e50, #34495e);
+          writing-mode: vertical-rl;
+          color: #fff;
+          text-align: center;
+          padding: 5px;
+          font-size: 14px;
+          border-radius: 4px;
+          z-index: 1;
+        }
+        .game-spine {
+          width: 40px;
+          height: 140px;
+          background: linear-gradient(to bottom, #224488, #4466aa);
+          writing-mode: vertical-rl;
+          color: #fff;
+          text-align: center;
+          padding: 5px;
+          font-size: 13px;
+          border-radius: 4px;
+          z-index: 1;
+        }
+        .bluray-spine {
+          width: 40px;
+          height: 120px;
+          background: linear-gradient(to bottom, #2980b9, #3498db);
+          writing-mode: vertical-rl;
+          color: #fff;
+          text-align: center;
+          padding: 5px;
+          font-size: 13px;
+          border-radius: 4px;
+          z-index: 1;
+        }
+        .tape-spine {
+          width: 40px;
+          height: 120px;
+          background: linear-gradient(to bottom, #7f8c8d, #95a5a6);
+          writing-mode: vertical-rl;
+          color: #fff;
+          text-align: center;
+          padding: 5px;
+          font-size: 13px;
+          border-radius: 4px;
+          z-index: 1;
+        }
+        .sidebar {
+          width: 220px;
+          background: #fff;
+          border-left: 1px solid #ddd;
+          padding: 20px;
+          overflow-y: auto;
+          z-index: 1;
+        }
+        .sidebar h2 {
+          font-size: 16px;
+          margin-bottom: 10px;
+          border-bottom: 1px solid #ccc;
+          padding-bottom: 4px;
+        }
+        .sidebar .user {
+          text-align: center;
+          margin-bottom: 20px;
+        }
+        .sidebar .user img {
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+        }
+        .sidebar .user p {
+          margin-top: 8px;
+          font-weight: bold;
+        }
+        .sidebar .menu-section {
+          margin-bottom: 20px;
+        }
+        .sidebar ul {
+          list-style: none;
+          padding-left: 10px;
+        }
+        .sidebar li {
+          margin: 6px 0;
+          cursor: pointer;
+          color: #333;
+        }
+        .sidebar li:hover {
+          text-decoration: underline;
+        }
+        .hover-cover {
+          position: absolute;
+          width: 160px;
+          background-size: cover;
+          background-position: center;
+          border-radius: 4px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+          opacity: 0;
+          pointer-events: none;
+          transform-origin: right center;
+          transition: transform 0.3s ease, opacity 0.3s ease;
+          z-index: 9999;
+        }
+        
+        /* 新增的评分弹窗样式 */
+        .rating-modal {
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          background: white;
+          padding: 20px;
+          border-radius: 8px;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+          z-index: 10000;
+          width: 300px;
+          max-width: 90%;
+          display: none;
+        }
+        .rating-modal h3 {
+          margin-bottom: 10px;
+          color: #333;
+        }
+        .rating-stars {
+          display: flex;
+          margin: 10px 0;
+        }
+        .star {
+          color: #ffc107;
+          font-size: 24px;
+          margin-right: 5px;
+        }
+        .rating-review {
+          margin-top: 15px;
+          line-height: 1.5;
+          color: #555;
+        }
+        .close-btn {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          cursor: pointer;
+          font-size: 18px;
+          color: #777;
+        }
+        .modal-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0, 0, 0, 0.5);
+          z-index: 9999;
+          display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bookshelf-wrapper">
+        <div class="shelf-layer">
+            <h3>📚 图书区</h3>
+            <div class="shelf" id="bookShelf"></div>
+        </div>
+        <div class="shelf-layer">
+            <h3>📖 漫画区</h3>
+            <div class="shelf" id="mangaShelf"></div>
+        </div>
+        <div class="shelf-layer">
+            <h3>🔧 工具书区</h3>
+            <div class="shelf" id="toolShelf"></div>
+        </div>
+        <div class="shelf-layer">
+            <h3>🎮 游戏盒区</h3>
+            <div class="shelf" id="gameShelf"></div>
+        </div>
+        <div class="shelf-layer">
+            <h3>💿 蓝光电影区</h3>
+            <div class="shelf" id="blurayShelf"></div>
+        </div>
+        <div class="shelf-layer">
+            <h3>📼 磁带区</h3>
+            <div class="shelf" id="tapeShelf"></div>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <div class="user">
+            <img src="https://i.pravatar.cc/100?u=me" alt="头像">
+            <p>用户名</p>
+        </div>
+
+        <div class="menu-section">
+            <h2>书架分类</h2>
+            <ul>
+                <li>全部</li>
+                <li>小说</li>
+                <li>漫画</li>
+                <li>工具书</li>
+            </ul>
+        </div>
+
+        <div class="menu-section">
+            <h2>最近阅读</h2>
+            <ul>
+                <li>活着</li>
+                <li>三体</li>
+            </ul>
+        </div>
+
+        <div class="menu-section">
+            <h2>阅读统计</h2>
+            <ul>
+                <li>今日阅读：15分钟</li>
+                <li>本周：1小时45分</li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="hoverCover" class="hover-cover"></div>
+    
+    <!-- 新增的评分弹窗 -->
+    <div class="modal-overlay" id="modalOverlay"></div>
+    <div class="rating-modal" id="ratingModal">
+        <span class="close-btn" id="closeModal">&times;</span>
+        <h3 id="modalTitle"></h3>
+        <div class="rating-stars" id="ratingStars"></div>
+        <div class="rating-review" id="ratingReview"></div>
+    </div>
+
+    <script>
+        const hoverCover = document.getElementById('hoverCover');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const ratingModal = document.getElementById('ratingModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const ratingStars = document.getElementById('ratingStars');
+        const ratingReview = document.getElementById('ratingReview');
+        const closeModal = document.getElementById('closeModal');
+        
+        /**
+         * 创建条目：书籍、漫画、工具书、游戏、蓝光、磁带
+         */
+        function createItem(container, className, title, coverUrl, coverHeight, rating, review) {
+          const item = document.createElement('div');
+          item.className = `${className}-container`;
+        
+          const spine = document.createElement('div');
+          spine.className = `${className}-spine`;
+          spine.innerText = title;
+        
+          item.appendChild(spine);
+        
+          item.addEventListener('mouseenter', (e) => {
+            const rect = e.target.getBoundingClientRect();
+            hoverCover.style.backgroundImage = `url('${coverUrl}')`;
+            hoverCover.style.height = coverHeight + 'px';
+            hoverCover.style.left = rect.right + 10 + 'px';
+            hoverCover.style.top = rect.top + 'px';
+            hoverCover.style.opacity = '1';
+            hoverCover.style.transform = 'scaleX(1)';
+          });
+        
+          item.addEventListener('mouseleave', () => {
+            hoverCover.style.opacity = '0';
+            hoverCover.style.transform = 'scaleX(0.8)';
+          });
+          
+          // 点击显示评分和评价
+          item.addEventListener('click', () => {
+            showRatingModal(title, rating, review);
+          });
+        
+          container.appendChild(item);
+        }
+        
+        // 显示评分弹窗
+        function showRatingModal(title, rating, review) {
+          modalTitle.textContent = title;
+          ratingStars.innerHTML = '';
+          
+          // 创建星级评分
+          for (let i = 0; i < 5; i++) {
+            const star = document.createElement('span');
+            star.className = 'star';
+            star.textContent = i < rating ? '★' : '☆';
+            ratingStars.appendChild(star);
+          }
+          
+          ratingReview.textContent = review;
+          
+          // 显示弹窗和遮罩
+          ratingModal.style.display = 'block';
+          modalOverlay.style.display = 'block';
+        }
+        
+        // 关闭弹窗
+        closeModal.addEventListener('click', () => {
+          ratingModal.style.display = 'none';
+          modalOverlay.style.display = 'none';
+        });
+        
+        modalOverlay.addEventListener('click', () => {
+          ratingModal.style.display = 'none';
+          modalOverlay.style.display = 'none';
+        });
+        
+        // 数据源定义
+        const datasets = [
+          {
+            id: 'bookShelf',
+            className: 'book',
+            data: [
+              { 
+                title: '活着', 
+                cover: 'https://images-cn.ssl-images-amazon.com/images/I/81MZV1KFFzL.jpg', 
+                height: 200,
+                rating: 5,
+                review: '余华的经典之作，讲述了中国农民福贵的一生。这本书让我深刻体会到生命的坚韧与脆弱，是一部震撼人心的作品。'
+              },
+              { 
+                title: '百年孤独', 
+                cover: 'https://images-cn.ssl-images-amazon.com/images/I/81CEb3J3ZzL.jpg', 
+                height: 200,
+                rating: 4,
+                review: '马尔克斯的魔幻现实主义代表作。布恩迪亚家族七代人的故事充满了奇幻色彩，展现了拉丁美洲的历史与文化。'
+              },
+              { 
+                title: '三体', 
+                cover: 'https://images-cn.ssl-images-amazon.com/images/I/81dPpM3A+XL.jpg', 
+                height: 200,
+                rating: 5,
+                review: '刘慈欣的科幻巨著，将中国科幻提升到世界水平。黑暗森林理论令人震撼，对人类文明的思考深刻而独到。'
+              }
+            ]
+          },
+          {
+            id: 'mangaShelf',
+            className: 'manga',
+            data: [
+              { 
+                title: '火影忍者', 
+                cover: 'https://m.media-amazon.com/images/I/81yrqWy5bIL.jpg', 
+                height: 200,
+                rating: 4,
+                review: '岸本齐史的热血少年漫画经典。讲述了鸣人从吊车尾成长为火影的故事，友情、努力和胜利的主题令人感动。'
+              },
+              { 
+                title: '进击的巨人', 
+                cover: 'https://m.media-amazon.com/images/I/91oOHhFQQFL.jpg', 
+                height: 200,
+                rating: 5,
+                review: '谏山创的黑暗奇幻作品。剧情反转不断，探讨了自由、战争和人性的复杂主题，结局令人深思。'
+              }
+            ]
+          },
+          {
+            id: 'toolShelf',
+            className: 'tool',
+            data: [
+              { 
+                title: 'JavaScript权威指南', 
+                cover: 'https://images-cn.ssl-images-amazon.com/images/I/81AJdOIEIhL.jpg', 
+                height: 200,
+                rating: 5,
+                review: 'JavaScript领域的经典参考书，内容全面深入，适合有一定基础的开发者查阅学习。'
+              },
+              { 
+                title: 'CSS揭秘', 
+                cover: 'https://images-cn.ssl-images-amazon.com/images/I/71L-HvKfYvL.jpg', 
+                height: 200,
+                rating: 4,
+                review: 'Lea Verou的CSS技巧集，提供了许多实用的解决方案和创意效果，适合前端开发者提升CSS技能。'
+              }
+            ]
+          },
+          {
+            id: 'gameShelf',
+            className: 'game',
+            data: [
+              { 
+                title: '塞尔达传说', 
+                cover: 'https://m.media-amazon.com/images/I/71PEHDccmwL.jpg', 
+                height: 140,
+                rating: 5,
+                review: '任天堂的开放世界冒险游戏杰作。广阔的海拉鲁大陆充满惊喜，自由探索的乐趣无与伦比。'
+              },
+              { 
+                title: '马里奥赛车', 
+                cover: 'https://m.media-amazon.com/images/I/81MPYk2fRxL.jpg', 
+                height: 140,
+                rating: 4,
+                review: '经典的竞速游戏系列，适合多人同乐。道具系统增加了比赛的变数和乐趣，画面精美，操作流畅。'
+              }
+            ]
+          },
+          {
+            id: 'blurayShelf',
+            className: 'bluray',
+            data: [
+              { 
+                title: '银翼杀手2049', 
+                cover: 'https://m.media-amazon.com/images/I/81fLXQdAG-L._AC_SL1500_.jpg', 
+                height: 120,
+                rating: 5,
+                review: '丹尼斯·维伦纽瓦执导的科幻续作，继承了前作的哲学思考，视觉效果震撼，配乐出色，节奏缓慢但引人入胜。'
+              },
+              { 
+                title: '星际穿越', 
+                cover: 'https://m.media-amazon.com/images/I/91cZ-e92DLL._AC_SL1500_.jpg', 
+                height: 120,
+                rating: 5,
+                review: '诺兰的太空史诗，将硬科幻与人文情感完美结合。黑洞和五维空间的视觉呈现令人惊叹，父女情令人动容。'
+              }
+            ]
+          },
+          {
+            id: 'tapeShelf',
+            className: 'tape',
+            data: [
+              { 
+                title: 'The Beatles', 
+                cover: 'https://m.media-amazon.com/images/I/91kjb5cvPXL._SL1500_.jpg', 
+                height: 120,
+                rating: 5,
+                review: '披头士乐队的经典专辑，收录了多首传世名曲。音乐创作跨越多种风格，展现了乐队的创新精神。'
+              },
+              { 
+                title: 'Queen - Greatest Hits', 
+                cover: 'https://m.media-amazon.com/images/I/81VGABfHo7L._SL1500_.jpg', 
+                height: 120,
+                rating: 4,
+                review: '皇后乐队的精选集，收录了"We Will Rock You"、"Bohemian Rhapsody"等经典曲目，展现了弗雷迪·墨丘利惊人的嗓音和舞台魅力。'
+              }
+            ]
+          }
+        ];
+        
+        // 渲染所有书架内容
+        datasets.forEach(({ id, className, data }) => {
+          const shelf = document.getElementById(id);
+          data.forEach(item => {
+            createItem(shelf, className, item.title, item.cover, item.height, item.rating, item.review);
+          });
+        });
+    </script>
+</body>
+
+</html>
