@@ -305,6 +305,11 @@
     </div>
 
     <script>
+// 强制刷新并清除缓存
+if(!window.location.search.includes('nocache')) {
+    window.location.replace(window.location.href + (window.location.search ? '&' : '?') + 'nocache=' + Date.now());
+}
+        
         const hoverCover = document.getElementById('hoverCover');
         const modalOverlay = document.getElementById('modalOverlay');
         const ratingModal = document.getElementById('ratingModal');
