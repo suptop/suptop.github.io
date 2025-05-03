@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>个人主页</title>
+  <!-- Font Awesome 图标库 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: black;
+      color: white;
+      font-family: 'Georgia', serif;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      font-size: 12px;
+      letter-spacing: 2px;
+      position: relative;
+    }
+    .logo {
+      font-weight: bold;
+      border: 2px solid white;
+      padding: 8px 12px;
+      display: inline-block;
+      transition: all 0.3s ease;
+    }
+    .logo:hover {
+      color: #111;
+      background-color: white;
+    }
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    nav a:hover {
+      color: #00ffff;
+      text-decoration: underline;
+    }
+
+    .social-icons {
+      margin-top: 30px;
+      font-size: 20px;
+    }
+    .social-icons a {
+      margin: 0 10px;
+      color: white;
+      text-decoration: none;
+      transition: transform 0.3s ease, color 0.3s ease;
+    }
+    .social-icons a:hover {
+      color: #00ffff;
+      transform: scale(1.2);
+    }
+
+    .menu-toggle {
+      display: none;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 0 20px;
+    }
+    .subtitle {
+      font-style: italic;
+      font-size: 14px;
+      margin-bottom: 20px;
+      opacity: 0.8;
+    }
+    .headline {
+      font-size: 36px;
+      line-height: 1.6;
+      letter-spacing: 4px;
+      font-weight: bold;
+      transition: transform 0.3s ease;
+    }
+    .headline:hover {
+      transform: scale(1.05);
+    }
+    .btn {
+      margin-top: 30px;
+      padding: 12px 24px;
+      border: 1px solid white;
+      color: white;
+      text-decoration: none;
+      font-size: 12px;
+      display: inline-block;
+      transition: all 0.3s ease;
+    }
+    .btn:hover {
+      background: white;
+      color: black;
+      transform: translateY(-3px);
+    }
+
+    /* 响应式菜单 */
+    @media (max-width: 768px) {
+      nav {
+        flex-direction: column;
+        align-items: flex-end;
+        position: absolute;
+        top: 60px;
+        right: 40px;
+        background: black;
+        padding: 10px;
+        display: none;
+      }
+      nav.active {
+        display: flex;
+      }
+      .menu-toggle {
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">D/S</div>
+    <i class="fas fa-bars menu-toggle" onclick="toggleMenu()"></i>
+    <nav id="nav">
+      <a href="#">主页</a>
+      <a href="#">项目</a>
+      <a href="#">关于我</a>
+      <a href="#">简历</a>
+      <a href="#">博客</a>
+      <a href="#">联系</a>
+    </nav>
+  </header>
+
+  <main>
+    <p class="subtitle">
+      我专注于构建有温度、有意义的数字体验。
+    </p>
+    <div class="headline">
+      一起打造<br>不平凡的作品
+    </div>
+    <a href="#" class="btn">观看介绍视频</a>
+
+    <div class="social-icons">
+      <a href="https://github.com/" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+      <a href="https://weibo.com/" target="_blank" title="微博"><i class="fab fa-weibo"></i></a>
+    </div>
+  </main>
+
+  <script>
+    function toggleMenu() {
+      const nav = document.getElementById('nav');
+      nav.classList.toggle('active');
+    }
+  </script>
+
+</body>
+</html>
