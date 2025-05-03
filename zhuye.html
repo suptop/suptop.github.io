@@ -7,103 +7,152 @@
   <!-- Font Awesome 图标库 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
-    html, body {
+    * {
       margin: 0;
       padding: 0;
-      height: 100%;
-      font-family: 'Helvetica Neue', sans-serif;
-      color: white;
-      background: #000;
+      box-sizing: border-box;
     }
-
     body {
-      background: url('https://source.unsplash.com/1600x900/?mountain,dark') no-repeat center center fixed;
-      background-size: cover;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      position: relative;
+      background: black;
+      color: white;
+      font-family: 'Georgia', serif;
       text-align: center;
     }
-
-    .overlay-circle {
-      position: absolute;
-      width: 300px;
-      height: 300px;
-      background-color: rgba(128, 0, 0, 0.4);
-      border-radius: 50%;
-      z-index: 1;
-    }
-
-    .content {
-      position: relative;
-      z-index: 2;
-      max-width: 90%;
-    }
-
-    .title {
-      font-size: 28px;
-      letter-spacing: 3px;
-      margin-bottom: 10px;
-    }
-
-    .subtitle {
-      font-size: 14px;
-      opacity: 0.8;
-      margin-bottom: 40px;
-    }
-
-    .social {
-      position: absolute;
-      bottom: 30px;
+    header {
       display: flex;
-      gap: 18px;
-      font-size: 20px;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      font-size: 12px;
+      letter-spacing: 2px;
+      position: relative;
     }
-
-    .social a {
+    .logo {
+      font-weight: bold;
+      border: 2px solid white;
+      padding: 8px 12px;
+      display: inline-block;
+    }
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    nav a {
       color: white;
       text-decoration: none;
     }
-
-    .social a:hover {
-      color: #aaa;
+    nav a:hover {
+      text-decoration: underline;
     }
 
-    @media (max-width: 600px) {
-      .overlay-circle {
-        width: 200px;
-        height: 200px;
+    .social-icons {
+      margin-top: 30px;
+      font-size: 20px;
+    }
+    .social-icons a {
+      margin: 0 10px;
+      color: white;
+      text-decoration: none;
+    }
+    .social-icons a:hover {
+      color: #ccc;
+    }
+
+    .menu-toggle {
+      display: none;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    main {
+      margin-top: 100px;
+      padding: 0 20px;
+    }
+    .subtitle {
+      font-style: italic;
+      font-size: 14px;
+      margin-bottom: 20px;
+      opacity: 0.8;
+    }
+    .headline {
+      font-size: 32px;
+      line-height: 1.6;
+      letter-spacing: 4px;
+      font-weight: bold;
+    }
+    .btn {
+      margin-top: 30px;
+      padding: 12px 24px;
+      border: 1px solid white;
+      color: white;
+      text-decoration: none;
+      font-size: 12px;
+      display: inline-block;
+    }
+    .btn:hover {
+      background: white;
+      color: black;
+      transition: 0.3s;
+    }
+
+    /* 响应式菜单 */
+    @media (max-width: 768px) {
+      nav {
+        flex-direction: column;
+        align-items: flex-end;
+        position: absolute;
+        top: 60px;
+        right: 40px;
+        background: black;
+        padding: 10px;
+        display: none;
       }
-      .title {
-        font-size: 22px;
+      nav.active {
+        display: flex;
       }
-      .subtitle {
-        font-size: 12px;
-      }
-      .social {
-        font-size: 18px;
-        gap: 12px;
+      .menu-toggle {
+        display: block;
       }
     }
   </style>
 </head>
 <body>
 
-  <div class="overlay-circle"></div>
+  <header>
+    <div class="logo">D/S</div>
+    <i class="fas fa-bars menu-toggle" onclick="toggleMenu()"></i>
+    <nav id="nav">
+      <a href="#">主页</a>
+      <a href="#">项目</a>
+      <a href="#">关于我</a>
+      <a href="#">简历</a>
+      <a href="#">博客</a>
+      <a href="#">联系</a>
+    </nav>
+  </header>
 
-  <div class="content">
-    <div class="title">设计师 & 创作者</div>
-    <div class="subtitle">基于上海 · 专注于设计与前端开发</div>
-  </div>
+  <main>
+    <p class="subtitle">
+      我专注于构建有温度、有意义的数字体验。
+    </p>
+    <div class="headline">
+      一起打造<br>不平凡的作品
+    </div>
+    <a href="#" class="btn">观看介绍视频</a>
 
-  <div class="social">
-    <a href="https://github.com/" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
-    <a href="https://weibo.com/" target="_blank" title="微博"><i class="fab fa-weibo"></i></a>
-    <a href="https://bilibili.com/" target="_blank" title="Bilibili"><i class="fab fa-bilibili"></i></a>
-    <a href="mailto:hello@example.com" title="邮箱"><i class="fas fa-envelope"></i></a>
-  </div>
+    <div class="social-icons">
+      <a href="https://github.com/" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+      <a href="https://weibo.com/" target="_blank" title="微博"><i class="fab fa-weibo"></i></a>
+    </div>
+  </main>
+
+  <script>
+    function toggleMenu() {
+      const nav = document.getElementById('nav');
+      nav.classList.toggle('active');
+    }
+  </script>
 
 </body>
 </html>
