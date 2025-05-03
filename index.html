@@ -7,14 +7,22 @@
   <!-- Font Awesome 图标库 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
+    :root {
+      --primary-color: #e6f0ff;
+      --hover-color: #6699ff;
+      --text-color: #1a1a1a;
+      --background-color: #f0f4ff;
+      --button-hover-bg: #3366ff;
+      --button-hover-color: white;
+    }
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
     body {
-      background: black;
-      color: white;
+      background: var(--background-color);
+      color: var(--text-color);
       font-family: 'Georgia', serif;
       text-align: center;
       display: flex;
@@ -32,14 +40,14 @@
     }
     .logo {
       font-weight: bold;
-      border: 2px solid white;
+      border: 2px solid var(--text-color);
       padding: 8px 12px;
       display: inline-block;
       transition: all 0.3s ease;
     }
     .logo:hover {
-      color: #111;
-      background-color: white;
+      color: white;
+      background-color: var(--hover-color);
     }
     nav {
       display: flex;
@@ -47,12 +55,12 @@
       gap: 12px;
     }
     nav a {
-      color: white;
+      color: var(--text-color);
       text-decoration: none;
       transition: color 0.3s ease;
     }
     nav a:hover {
-      color: #00ffff;
+      color: var(--hover-color);
       text-decoration: underline;
     }
 
@@ -62,12 +70,12 @@
     }
     .social-icons a {
       margin: 0 10px;
-      color: white;
+      color: var(--text-color);
       text-decoration: none;
       transition: transform 0.3s ease, color 0.3s ease;
     }
     .social-icons a:hover {
-      color: #00ffff;
+      color: var(--hover-color);
       transform: scale(1.2);
     }
 
@@ -104,16 +112,16 @@
     .btn {
       margin-top: 30px;
       padding: 12px 24px;
-      border: 1px solid white;
-      color: white;
+      border: 1px solid var(--text-color);
+      color: var(--text-color);
       text-decoration: none;
       font-size: 12px;
       display: inline-block;
       transition: all 0.3s ease;
     }
     .btn:hover {
-      background: white;
-      color: black;
+      background: var(--button-hover-bg);
+      color: var(--button-hover-color);
       transform: translateY(-3px);
     }
 
@@ -125,7 +133,7 @@
         position: absolute;
         top: 60px;
         right: 40px;
-        background: black;
+        background: var(--background-color);
         padding: 10px;
         display: none;
       }
