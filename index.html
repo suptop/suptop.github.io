@@ -169,10 +169,15 @@
   </main>
 
   <script>
-    function toggleMenu() {
-      const nav = document.getElementById('nav');
-      nav.classList.toggle('active');
-    }
+
+// 强制刷新并清除缓存
+if(!window.location.search.includes('nocache')) {
+    window.location.replace(window.location.href + (window.location.search ? '&' : '?') + 'nocache=' + Date.now());
+}
+function toggleMenu() {
+const nav = document.getElementById('nav');
+nav.classList.toggle('active');
+}
   </script>
 
 </body>
