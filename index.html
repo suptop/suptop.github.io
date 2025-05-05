@@ -52,7 +52,7 @@
     </a>
   </div>
 
-  <div class="w-full max-w-md px-4 text-center">
+  <div class="w-full max-w-md px-4 text-center translate-y-[-10%]">
     <!-- 隐藏式搜索引擎选择 -->
     <div class="relative mb-4">
       <input type="hidden" id="engine" value="google">
@@ -71,7 +71,7 @@
     <div class="flex">
       <input id="query" type="text" placeholder="搜索点什么…" 
         class="flex-grow p-2 border border-gray-300 dark:border-gray-600 rounded-l bg-white dark:bg-gray-800 dark:text-white" 
-        onkeydown="if(event.key==='Enter') search()" />
+        onkeydown="if(event.key==='Enter') search()" autocomplete="off" />
       <button onclick="search()" class="p-2 bg-black text-white rounded-r dark:bg-white dark:text-black">
         搜索
       </button>
