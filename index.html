@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh" class="transition-colors duration-300">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>简洁搜索</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class'
+    };
+
+    function search() {
+      const query = document.getElementById('query').value.trim();
+      const engine = document.getElementById('engine').value;
+      if (!query) return;
+      const urls = {
+        google: `https://www.google.com/search?q=${encodeURIComponent(query)}`,
+        bing: `https://www.bing.com/search?q=${encodeURIComponent(query)}`,
+        duckduckgo: `https://duckduckgo.com/?q=${encodeURIComponent(query)}`,
+        baidu: `https://www.baidu.com/s?wd=${encodeURIComponent(query)}`
+      };
+      window.location.href = urls[engine];
+    }
+
+    function toggleDropdown() {
+      const menu = document.getElementById('engineMenu');
+      menu.classList.toggle('hidden');
+    }
+
+    function selectEngine(value, label) {
+      document.getElementById('engine').value = value;
+      document.getElementById('engineLabel').innerText = label;
+      document.getElementById('engineMenu').classList.add('hidden');
+    }
+
+    function toggleDarkMode() {
+      document.documentElement.classList.toggle('dark');
+    }
+  </script>
+</head>
+<body class="bg-white text-black dark:bg-gray-900 dark:text-white flex items-center justify-center h-screen relative transition-colors duration-300">
+  <!-- 暗色模式切换按钮 -->
+  <button onclick="toggleDarkMode()" class="absolute top-4 right-4 p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-sm text-gray-800 dark:text-white shadow">
+    🌙/☀️
+  </button>
+
+  <div class="w-full max-w-md px-4 text-center">
+    <!-- 隐藏式搜索引擎选择 -->
+    <div class="relative mb-4">
+      <input type="hidden" id="engine" value="google">
+      <button onclick="toggleDropdown()" class="w-full p-2 rounded text-left bg-white dark:bg-gray-800">
+         <span id="engineLabel">Google</span>
+      </button>
+      <div id="engineMenu" class="absolute z-10 mt-1 w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded shadow hidden transition-all duration-200 ease-in-out">
+        <div class="hover:bg-gray-100 dark:hover:bg-gray-700 p-2 cursor-pointer" onclick="selectEngine('google', 'Google')">Google</div>
+        <div class="hover:bg-gray-100 dark:hover:bg-gray-700 p-2 cursor-pointer" onclick="selectEngine('bing', 'Bing')">Bing</div>
+        <div class="hover:bg-gray-100 dark:hover:bg-gray-700 p-2 cursor-pointer" onclick="selectEngine('duckduckgo', 'DuckDuckGo')">DuckDuckGo</div>
+        <div class="hover:bg-gray-100 dark:hover:bg-gray-700 p-2 cursor-pointer" onclick="selectEngine('baidu', '百度')">百度</div>
+      </div>
+    </div>
+
+    <!-- 搜索框 -->
+    <div class="flex">
+      <input id="query" type="text" placeholder="搜索点什么…" 
+        class="flex-grow p-2 border border-gray-300 dark:border-gray-600 rounded-l bg-white dark:bg-gray-800 dark:text-white" 
+        onkeydown="if(event.key==='Enter') search()" />
+      <button onclick="search()" class="p-2 bg-black text-white rounded-r dark:bg-white dark:text-black">
+        搜索
+      </button>
+    </div>
+  </div>
+</body>
+</html>
