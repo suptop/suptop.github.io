@@ -1,36 +1,28 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>我的导航页</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="styles.css">
+  <title>导航网站</title>
+
 </head>
-<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
-  <div class="max-w-7xl mx-auto p-6">
-    <div class="flex justify-between items-center mb-8">
-      <h1 class="text-3xl font-bold">我的导航页</h1>
-      <button id="darkToggle" class="bg-gray-200 dark:bg-gray-700 px-4 py-2 rounded shadow">
-        🌙 夜间模式
-      </button>
+<body>
+  <aside class="sidebar">
+    <h2>分类</h2>
+    <div id="categoryList">
+      <button class="active" data-category="all">全部</button>
+      <button data-category="设计">设计</button>
+      <button data-category="开发">开发</button>
+      <button data-category="工具">工具</button>
+      <button data-category="AI">AI</button>
+      <button data-category="学习">学习</button>
     </div>
+  </aside>
 
-    <div class="mb-6">
-      <h2 class="text-2xl font-semibold mb-4">星标网站</h2>
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6" id="starredSites">
-        <!-- 星标网站卡片将在这里生成 -->
-      </div>
-    </div>
+  <main>
+    <div id="siteList"></div>
+  </main>
 
-    <div class="mb-6">
-      <h2 class="text-2xl font-semibold mb-4">所有网站</h2>
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6" id="siteGrid">
-        <!-- 所有网站卡片将在这里生成 -->
-      </div>
-    </div>
-  </div>
-
-  <script src="script.js" defer></script>
+  <script src="script.js"></script>
 </body>
 </html>
