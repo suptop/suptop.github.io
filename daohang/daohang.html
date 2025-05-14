@@ -1,1 +1,102 @@
 
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>我的导航页</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+    };
+  </script>
+  <style>
+    .flip-card {
+      perspective: 1000px;
+    }
+    .flip-inner {
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+    .flip-card:hover .flip-inner {
+      transform: rotateY(180deg);
+    }
+    .flip-front, .flip-back {
+      backface-visibility: hidden;
+    }
+    .flip-back {
+      transform: rotateY(180deg);
+    }
+  </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+  <div class="max-w-7xl mx-auto p-6">
+    <div class="flex justify-between items-center mb-8">
+      <h1 class="text-3xl font-bold">我的导航页</h1>
+      <button id="darkToggle" class="bg-gray-200 dark:bg-gray-700 px-4 py-2 rounded shadow">
+        🌙 夜间模式
+      </button>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+      <!-- 自动生成网站列表 -->
+    </div>
+  </div>
+
+  <script>
+    const toggle = document.getElementById('darkToggle');
+    toggle.addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+    });
+
+    const sites = [
+      { name: "MoeRanker", url: "https://moe.ys.al/" },
+      { name: "Reddit", url: "https://www.reddit.com/" },
+      { name: "愛上傳", url: "https://img.chkaja.com/" },
+      { name: "X / Twitter", url: "https://twitter.com/home" },
+      { name: "Dcard", url: "https://www.dcard.tw/f" },
+      { name: "Twitter.com", url: "https://twitter.com/" },
+      { name: "Twitch", url: "https://www.twitch.tv/zenkaigoose/schedule" },
+      { name: "Discord", url: "https://discord.com/channels/@me" },
+      { name: "NGA玩家社区", url: "http://bbs.nga.cn/" },
+      { name: "吾爱破解", url: "https://www.52pojie.cn/" },
+      { name: "NGA-网页游戏", url: "https://bbs.nga.cn/thread.php?fid=428" },
+      { name: "南+", url: "https://www.south-plus.net/" },
+      { name: "宇千鹤", url: "https://go.yuqianhe.xyz/auth/login" },
+      { name: "RuTracker", url: "https://rutracker.org/forum/index.php" },
+      { name: "ByRut", url: "https://byrut.org/" },
+      { name: "Scighost", url: "https://scighost.coding.net/public-artifacts/xunkong/releases/packages" },
+      { name: "据点探索 Mew", url: "https://mew.fun/sector-explore?sectorId=114995938315218944" },
+      { name: "虎牙直播", url: "https://www.huya.com/" },
+      { name: "吕德华直播", url: "https://www.huya.com/243547" },
+      { name: "戴森球 NGA", url: "https://bbs.nga.cn/thread.php?fid=839" },
+      { name: "接水管游戏", url: "https://cn.puzzle-pipes.com/" },
+      { name: "MyFreeMP3", url: "http://tool.liumingye.cn/music/?page=discoverPage#/" },
+      { name: "CPU天梯榜", url: "https://topic.expreview.com/CPU/" },
+      { name: "Kmoe 漫画", url: "https://volmoe.com/" }
+    ];
+
+    const grid = document.querySelector(".grid");
+    for (const site of sites) {
+      const domain = new URL(site.url).hostname;
+      const card = document.createElement("a");
+      card.href = site.url;
+      card.target = "_blank";
+      card.className = "flip-card block w-full aspect-square";
+      card.innerHTML = `
+        <div class="flip-inner w-full h-full relative">
+          <div class="flip-front absolute w-full h-full bg-white dark:bg-gray-800 rounded-lg shadow flex flex-col items-center justify-center text-center p-2">
+            <img src="https://www.google.com/s2/favicons?domain=${domain}&sz=64" alt="${site.name}" class="w-10 h-10 mb-2">
+            <span class="text-sm font-medium">${site.name}</span>
+          </div>
+          <div class="flip-back absolute w-full h-full bg-indigo-600 text-white rounded-lg shadow flex items-center justify-center text-xl font-semibold">
+            进入
+          </div>
+        </div>
+      `;
+      grid.appendChild(card);
+    }
+  </script>
+</body>
+</html>
