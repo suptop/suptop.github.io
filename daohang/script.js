@@ -1,64 +1,83 @@
 const sites = [
-  { name: "MoeRanker", url: "https://moe.ys.al/", icon: "https://moe.ys.al/favicon.ico" },
-  { name: "Reddit", url: "https://www.reddit.com/", icon: "https://www.redditstatic.com/desktop2x/img/favicon.ico" },
-  { name: "愛上傳", url: "https://img.chkaja.com/", icon: "https://img.chkaja.com/favicon.ico" },
-  { name: "X / Twitter", url: "https://twitter.com/home", icon: "https://twitter.com/favicon.ico" },
-  { name: "Dcard", url: "https://www.dcard.tw/f", icon: "https://www.dcard.tw/favicon.ico" },
-  { name: "Twitch", url: "https://www.twitch.tv/zenkaigoose/schedule", icon: "https://static.twitchcdn.net/assets/favicon-8f3fefed255b2e7a3a5e2d5c57a0b6da.ico" },
-  // 继续添加其他网站...
+  { name: "Figma", url: "https://figma.com", tags: ["设计", "协作", "UI"], category: "设计", starred: true },
+  { name: "Dribbble", url: "https://dribbble.com", tags: ["设计", "灵感", "作品集"], category: "设计", starred: false },
+  { name: "GitHub", url: "https://github.com", tags: ["开发", "代码托管", "协作"], category: "开发", starred: true },
+  { name: "Stack Overflow", url: "https://stackoverflow.com", tags: ["开发", "问答", "社区"], category: "开发", starred: false },
+  { name: "MDN Web Docs", url: "https://developer.mozilla.org", tags: ["文档", "HTML", "CSS", "JS"], category: "开发", starred: false },
+  { name: "TinyPNG", url: "https://tinypng.com", tags: ["工具", "图片压缩"], category: "工具", starred: false },
+  { name: "Canva", url: "https://www.canva.com", tags: ["设计", "在线编辑", "模板"], category: "设计", starred: false },
+  { name: "Notion", url: "https://www.notion.so", tags: ["笔记", "知识管理", "工具"], category: "工具", starred: true },
+  { name: "ChatGPT", url: "https://chat.openai.com", tags: ["AI", "聊天", "创作"], category: "AI", starred: true },
+  { name: "Hugging Face", url: "https://huggingface.co", tags: ["AI", "模型", "社区"], category: "AI", starred: false },
+  { name: "Google Fonts", url: "https://fonts.google.com", tags: ["设计", "字体", "资源"], category: "设计", starred: false },
+  { name: "Vercel", url: "https://vercel.com", tags: ["部署", "前端", "工具"], category: "开发", starred: false },
+  { name: "Netlify", url: "https://www.netlify.com", tags: ["部署", "静态网站", "工具"], category: "开发", starred: false },
+  { name: "CodePen", url: "https://codepen.io", tags: ["前端", "实验", "分享"], category: "开发", starred: false },
+  { name: "W3Schools", url: "https://www.w3schools.com", tags: ["学习", "HTML", "入门"], category: "学习", starred: false },
+  { name: "Coursera", url: "https://www.coursera.org", tags: ["学习", "课程", "大学"], category: "学习", starred: false },
+
+  // 以下为新增 20 个示例网站
+  { name: "Freepik", url: "https://www.freepik.com", tags: ["素材", "设计", "图标"], category: "设计", starred: false },
+  { name: "Behance", url: "https://www.behance.net", tags: ["设计", "作品集"], category: "设计", starred: false },
+  { name: "Bootstrap", url: "https://getbootstrap.com", tags: ["开发", "CSS框架"], category: "开发", starred: false },
+  { name: "Vue.js", url: "https://vuejs.org", tags: ["开发", "前端框架"], category: "开发", starred: false },
+  { name: "React", url: "https://reactjs.org", tags: ["开发", "前端", "组件"], category: "开发", starred: false },
+  { name: "Squoosh", url: "https://squoosh.app", tags: ["图片压缩", "工具"], category: "工具", starred: false },
+  { name: "Remove.bg", url: "https://www.remove.bg", tags: ["抠图", "AI", "工具"], category: "工具", starred: false },
+  { name: "Tool.lu", url: "https://tool.lu", tags: ["在线工具", "开发", "格式化"], category: "工具", starred: false },
+  { name: "Jupyter", url: "https://jupyter.org", tags: ["开发", "数据", "Python"], category: "开发", starred: false },
+  { name: "DeepL", url: "https://www.deepl.com", tags: ["翻译", "AI", "语言"], category: "AI", starred: false },
+  { name: "Kaggle", url: "https://www.kaggle.com", tags: ["AI", "数据", "比赛"], category: "AI", starred: false },
+  { name: "Midjourney", url: "https://www.midjourney.com", tags: ["AI", "图像生成"], category: "AI", starred: false },
+  { name: "OpenProcessing", url: "https://openprocessing.org", tags: ["创意", "代码", "艺术"], category: "设计", starred: false },
+  { name: "Archive.org", url: "https://archive.org", tags: ["资料库", "历史", "图书"], category: "学习", starred: false },
+  { name: "YouTube EDU", url: "https://www.youtube.com/education", tags: ["视频", "学习", "公开课"], category: "学习", starred: false },
+  { name: "Aliyun", url: "https://www.aliyun.com", tags: ["云服务", "工具"], category: "工具", starred: false },
+  { name: "腾讯云", url: "https://cloud.tencent.com", tags: ["云服务", "工具"], category: "工具", starred: false },
+  { name: "Designspiration", url: "https://www.designspiration.com", tags: ["设计", "灵感"], category: "设计", starred: false },
+  { name: "Typeform", url: "https://www.typeform.com", tags: ["表单", "交互", "工具"], category: "工具", starred: false },
+  { name: "FlowCV", url: "https://flowcv.io", tags: ["简历", "设计", "工具"], category: "工具", starred: false }
 ];
 
-const siteGrid = document.getElementById("siteGrid");
-const starredSites = document.getElementById("starredSites");
+const siteList = document.getElementById("siteList");
+const categoryList = document.getElementById("categoryList");
 
-function createSiteCard(site) {
-  const card = document.createElement("div");
-  card.className = "flip-card block w-full aspect-square";
-
-  card.innerHTML = `
-    <div class="flip-inner w-full h-full relative">
-      <div class="flip-front absolute w-full h-full bg-white dark:bg-gray-800 rounded-lg shadow flex items-center justify-center text-center p-2">
-        <img src="${site.icon}" alt="${site.name} Icon" class="w-8 h-8 rounded-full" />
-        <span class="text-base font-bold">${site.name}</span>
-        <button class="ml-2 text-xl text-gray-500 hover:text-gray-700" onclick="toggleStar(this, '${site.name}')">
-          ★
-        </button>
-      </div>
-      <div class="flip-back absolute w-full h-full bg-indigo-600 text-white rounded-lg shadow flex items-center justify-center text-xl font-semibold">
-        进入
-      </div>
-    </div>
-  `;
-
-  return card;
+function getFavicon(url) {
+  const domain = new URL(url).hostname;
+  return `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
 }
 
-function toggleStar(button, siteName) {
-  const isStarred = button.classList.contains('starred');
+function renderSites(filter = "all") {
+  siteList.innerHTML = "";
+  const filtered = filter === "all" ? sites : sites.filter(s => s.category === filter);
 
-  // 在所有网站区域移除该网站卡片
-  const allSiteCard = Array.from(siteGrid.children).find(card =>
-    card.querySelector('.flip-front span').textContent === siteName
-  );
-  if (allSiteCard) {
-    siteGrid.removeChild(allSiteCard);
-  }
-
-  // 如果已被标记为星标，将其添加到星标区域
-  if (isStarred) {
-    // 取消星标
-    button.classList.remove('starred');
-    // 重新添加到所有网站区域
-    siteGrid.appendChild(createSiteCard(sites.find(site => site.name === siteName)));
-  } else {
-    // 添加星标
-    button.classList.add('starred');
-    // 移动到星标区域
-    starredSites.appendChild(createSiteCard(sites.find(site => site.name === siteName)));
-  }
+  filtered.forEach(site => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.setAttribute("data-category", site.category);
+    card.innerHTML = `
+      <div class="star ${site.starred ? 'active' : ''}">★</div>
+      <a href="${site.url}" target="_blank" rel="noopener">
+        <img src="${getFavicon(site.url)}" alt="${site.name}" class="favicon"/>
+        <div class="title">${site.name}</div>
+      </a>
+      <div class="tags">${site.tags.join(", ")}</div>
+    `;
+    card.querySelector(".star").addEventListener("click", (e) => {
+      e.stopPropagation();
+      site.starred = !site.starred;
+      renderSites(filter);
+    });
+    siteList.appendChild(card);
+  });
 }
 
-// 初始化页面
-sites.forEach(site => {
-  siteGrid.appendChild(createSiteCard(site));
+categoryList.querySelectorAll("button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    categoryList.querySelectorAll("button").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    renderSites(btn.dataset.category);
+  });
 });
+
+renderSites();
