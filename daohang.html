@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>我的导航页</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .flip-card {
+      perspective: 1000px;
+    }
+    .flip-inner {
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+    .flip-card:hover .flip-inner {
+      transform: rotateY(180deg);
+    }
+    .flip-front, .flip-back {
+      backface-visibility: hidden;
+    }
+    .flip-back {
+      transform: rotateY(180deg);
+    }
+  </style>
+</head>
+<body class="bg-gray-100 p-6">
+  <h1 class="text-3xl font-bold text-center mb-8">我的常用网站导航</h1>
+  <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 max-w-6xl mx-auto">
+
+    <!-- GitHub -->
+    <a href="https://github.com" target="_blank" class="flip-card block w-full aspect-square">
+      <div class="flip-inner w-full h-full relative">
+        <div class="flip-front absolute w-full h-full bg-white rounded-lg shadow flex items-center justify-center">
+          <img src="https://github.githubassets.com/favicons/favicon.png" alt="GitHub" class="w-12 h-12" />
+        </div>
+        <div class="flip-back absolute w-full h-full bg-black text-white rounded-lg shadow flex items-center justify-center text-xl font-semibold">
+          进入
+        </div>
+      </div>
+    </a>
+
+    <!-- Bilibili -->
+    <a href="https://www.bilibili.com" target="_blank" class="flip-card block w-full aspect-square">
+      <div class="flip-inner w-full h-full relative">
+        <div class="flip-front absolute w-full h-full bg-white rounded-lg shadow flex items-center justify-center">
+          <img src="https://www.bilibili.com/favicon.ico" alt="Bilibili" class="w-12 h-12" />
+        </div>
+        <div class="flip-back absolute w-full h-full bg-pink-500 text-white rounded-lg shadow flex items-center justify-center text-xl font-semibold">
+          进入
+        </div>
+      </div>
+    </a>
+
+    <!-- 知乎 -->
+    <a href="https://www.zhihu.com" target="_blank" class="flip-card block w-full aspect-square">
+      <div class="flip-inner w-full h-full relative">
+        <div class="flip-front absolute w-full h-full bg-white rounded-lg shadow flex items-center justify-center">
+          <img src="https://static.zhihu.com/heifetz/favicon.ico" alt="知乎" class="w-12 h-12" />
+        </div>
+        <div class="flip-back absolute w-full h-full bg-blue-500 text-white rounded-lg shadow flex items-center justify-center text-xl font-semibold">
+          进入
+        </div>
+      </div>
+    </a>
+
+    <!-- 微博 -->
+    <a href="https://weibo.com" target="_blank" class="flip-card block w-full aspect-square">
+      <div class="flip-inner w-full h-full relative">
+        <div class="flip-front absolute w-full h-full bg-white rounded-lg shadow flex items-center justify-center">
+          <img src="https://weibo.com/favicon.ico" alt="微博" class="w-12 h-12" />
+        </div>
+        <div class="flip-back absolute w-full h-full bg-red-500 text-white rounded-lg shadow flex items-center justify-center text-xl font-semibold">
+          进入
+        </div>
+      </div>
+    </a>
+
+    <!-- 豆瓣 -->
+    <a href="https://www.douban.com" target="_blank" class="flip-card block w-full aspect-square">
+      <div class="flip-inner w-full h-full relative">
+        <div class="flip-front absolute w-full h-full bg-white rounded-lg shadow flex items-center justify-center">
+          <img src="https://www.douban.com/favicon.ico" alt="豆瓣" class="w-12 h-12" />
+        </div>
+        <div class="flip-back absolute w-full h-full bg-green-600 text-white rounded-lg shadow flex items-center justify-center text-xl font-semibold">
+          进入
+        </div>
+      </div>
+    </a>
+
+    <!-- Google -->
+    <a href="https://www.google.com" target="_blank" class="flip-card block w-full aspect-square">
+      <div class="flip-inner w-full h-full relative">
+        <div class="flip-front absolute w-full h-full bg-white rounded-lg shadow flex items-center justify-center">
+          <img src="https://www.google.com/favicon.ico" alt="Google" class="w-12 h-12" />
+        </div>
+        <div class="flip-back absolute w-full h-full bg-blue-700 text-white rounded-lg shadow flex items-center justify-center text-xl font-semibold">
+          进入
+        </div>
+      </div>
+    </a>
+
+  </div>
+</body>
+</html>
