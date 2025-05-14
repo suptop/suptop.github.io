@@ -1,0 +1,102 @@
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* 左侧分类栏 */
+    .sidebar {
+      width: 180px;
+      background-color: #f4f4f4;
+      padding: 1rem;
+      border-right: 1px solid #ddd;
+    }
+    .sidebar h2 {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .sidebar button {
+      display: block;
+      width: 100%;
+      margin: 0.25rem 0;
+      padding: 0.5rem;
+      background: none;
+      border: none;
+      text-align: left;
+      cursor: pointer;
+      font-size: 0.95rem;
+      border-radius: 4px;
+    }
+    .sidebar button.active {
+      background-color: #ddd;
+      font-weight: bold;
+    }
+
+    /* 主区域 */
+    main {
+      flex: 1;
+      padding: 1rem;
+      overflow-y: auto;
+    }
+    #siteList {
+      column-count: 3;
+      column-gap: 1rem;
+    }
+
+    .card {
+      break-inside: avoid;
+      background-color: #fff;
+      border: 1px solid #eee;
+      border-radius: 6px;
+      padding: 0.5rem;
+      margin: 0 0 1rem;
+      position: relative;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-2px);
+    }
+    .card a {
+      text-decoration: none;
+      color: inherit;
+    }
+    .card .favicon {
+      width: 32px;
+      height: 32px;
+    }
+    .card .title {
+      font-size: 1rem;
+      margin: 0.5rem 0;
+      font-weight: bold;
+    }
+    .card .tags {
+      font-size: 0.75rem;
+      color: #666;
+    }
+
+    .star {
+      position: absolute;
+      top: 0.4rem;
+      right: 0.6rem;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: #ccc;
+      user-select: none;
+    }
+    .star.active {
+      color: gold;
+    }
+
+    @media (max-width: 768px) {
+      #siteList {
+        column-count: 1;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
