@@ -5,29 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>我的导航页</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-    };
-  </script>
-  <style>
-    .flip-card {
-      perspective: 1000px;
-    }
-    .flip-inner {
-      transition: transform 0.6s;
-      transform-style: preserve-3d;
-    }
-    .flip-card:hover .flip-inner {
-      transform: rotateY(180deg);
-    }
-    .flip-front, .flip-back {
-      backface-visibility: hidden;
-    }
-    .flip-back {
-      transform: rotateY(180deg);
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
   <div class="max-w-7xl mx-auto p-6">
@@ -38,12 +16,21 @@
       </button>
     </div>
 
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
-      <!-- 自动生成网站列表 -->
+    <div class="mb-6">
+      <h2 class="text-2xl font-semibold mb-4">星标网站</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6" id="starredSites">
+        <!-- 星标网站卡片将在这里生成 -->
+      </div>
+    </div>
+
+    <div class="mb-6">
+      <h2 class="text-2xl font-semibold mb-4">所有网站</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6" id="siteGrid">
+        <!-- 所有网站卡片将在这里生成 -->
+      </div>
     </div>
   </div>
 
-  <!-- 引用外部 JavaScript 文件 -->
-  <script src="daohang/script.js" defer></script>
+  <script src="script.js" defer></script>
 </body>
 </html>
