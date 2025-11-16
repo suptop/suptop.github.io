@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>聊天记录 — 歌词式滚动效果</title>
+  <style>
+    :root{
+      --bg:#0f1724;
+      --left-bubble:#111827;
+      --right-bubble:#0ea5a4;
+      --text-light:#e6eef8;
+      --muted:rgba(230,238,248,0.6);
+      --radius:16px;
+      --max-translate:38px;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    html,body{height:100%;}
+    body{
+      margin:0;
+      background:linear-gradient(180deg,var(--bg) 0%, #071023 100%);
+      color:var(--text-light);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-y:scroll;
+      scroll-behavior: smooth;
+    }
+    .wrap{
+      max-width:840px;
+      margin:60px auto;
+      padding:48px 24px 120px;
+      box-sizing:border-box;
+    }
+    h1{
+      text-align:center;
+      margin:0 0 30px 0;
+      font-size:20px;
+      color:var(--muted);
+      letter-spacing:1px;
+    }
+    .list{
+      position:relative;
+      display:flex;
+      flex-direction:column;
+      gap:22px;
+      padding:20px 10px 40px;
+    }
+    .msg{
+      display:inline-block;
+      max-width:70%;
+      padding:12px 14px;
+      border-radius:var(--radius);
+      box-shadow: 0 6px 20px rgba(2,6,23,0.6);
+      transform-origin:center center;
+      transition:box-shadow .2s ease;
+      will-change:transform, opacity, filter;
+    }
+    .row{
+      display:flex;
+      align-items:flex-end;
+      min-height:48px;
+    }
+    .left{ justify-content:flex-start; }
+    .right{ justify-content:flex-end; }
+    .msg.left{
+      background: rgba(255,255,255,0.06);
+      color:#ffffff;
+      border:1px solid rgba(255,255,255,0.15);
+    }
+    .msg.right{
+      background: rgba(14,165,164,0.35);
+      color:#ffffff;
+    }
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+      will-change:transform;
+    }
+    .row.left .avatar {
+      margin-right: 12px;
+    }
+    .row.right .avatar {
+      margin-left: 12px;
+    }
+    .meta{
+      font-size:12px;
+      color:var(--muted);
+      margin-top:8px;
+      text-align:right;
+    }
+    /* small UI hint */
+    .hint{ text-align:center; color:var(--muted); margin-top:14px; font-size:13px }
+    /* optional: make rows easy to click */
+    .msg:active{ transform:scale(.995); }
+    /* Make the page taller so scroll effect is obvious on small content */
+    .spacer{ height:120vh }
+    @media (max-width:600px){
+      .wrap{ padding:36px 12px 140px }
+      .msg{ max-width:82% }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>滚轮悦动 — 聊天气泡示例（向左 / 向右）</h1>
+    <div class="list" id="list">
+      <!-- you can add/remove .row blocks; .msg 的类 left/right 控制对齐 -->
+      <div class="row left">
+        <img class="avatar" src="https://i.pravatar.cc/40?img=1" alt="用户A">
+        <div class="msg left">嗨，你今天好像有空吗？</div>
+      </div>
+      <div class="row right">
+        <div class="msg right">有空的，晚上想去看电影还是在家玩游戏？</div>
+        <img class="avatar" src="https://i.pravatar.cc/40?img=2" alt="用户B">
+      </div>
+      <div class="row left">
+        <img class="avatar" src="https://i.pravatar.cc/40?img=1" alt="用户A">
+        <div class="msg left">要不要顺便吃点东西？我知道一家不错的小吃店。</div>
+      </div>
+      <div class="row right">
+        <div class="msg right">好啊，几点集合？</div>
+        <img class="avatar" src="https://i.pravatar.cc/40?img=2" alt="用户B">
+      </div>
+      <div class="row left">
+        <img class="avatar" src="https://i.pravatar.cc/40?img=1" alt="用户A">
+        <div class="msg left">七点在地铁站口，我到时发定位。</div>
+      </div>
+      <div class="row right">
+        <div class="msg right">收到！我带上电影票，记得戴口罩😁</div>
+        <img class="avatar" src="https://i.pravatar.cc/40?img=2" alt="用户B">
+      </div>
+      <div class="row left">
+        <img class="avatar" src="https://i.pravatar.cc/40?img=1" alt="用户A">
+        <div class="msg left">哈哈，好嘞。对了你上次发的那段代码我看了，很赞。</div>
+      </div>
+      <div class="row right">
+        <div class="msg right">谢谢夸奖～ 有空我再优化一下动画。</div>
+        <img class="avatar" src="https://i.pravatar.cc/40?img=2" alt="用户B">
+      </div>
+      <div class="row left">
+        <img class="avatar" src="https://i.pravatar.cc/40?img=1" alt="用户A">
+        <div class="msg left">期待你的更新 ✨</div>
+      </div>
+      <div class="row right">
+        <div class="msg right">话说回来，你最近在忙什么项目？</div>
+        <img class="avatar" src="https://i.pravatar.cc/40?img=2" alt="用户B">
+      </div>
+      <div class="row left">
+        <img class="avatar" src="https://i.pravatar.cc/40?img=1" alt="用户A">
+        <div class="msg left">在搞一个Web动画库，灵感就来自这种滚动效果。</div>
+      </div>
+      <div class="row right">
+        <div class="msg right">听起来酷毙了！开源吗？我想试试。</div>
+        <img class="avatar" src="https://i.pravatar.cc/40?img=2" alt="用户B">
+      </div>
+      <div class="row left">
+        <img class="avatar" src="https://i.pravatar.cc/40?img=1" alt="用户A">
+        <div class="msg left">是的，GitHub上搜 'scroll-lyrics' 就能找到。欢迎star和pr。</div>
+      </div>
+      <div class="row right">
+        <div class="msg right">马上就去！电影时间快到了，赶紧出发吧。</div>
+        <img class="avatar" src="https://i.pravatar.cc/40?img=2" alt="用户B">
+      </div>
+      <div class="row left">
+        <img class="avatar" src="https://i.pravatar.cc/40?img=1" alt="用户A">
+        <div class="msg left">OK，见面聊！🚀</div>
+      </div>
+      <!-- spacer to allow more scrolling -->
+      <div class="spacer"></div>
+    </div>
+    <div class="hint">滚动页面看看“歌词式”悦动效果 — 靠近视口中心的消息会放大并变清晰</div>
+  </div>
+  <script>
+    // Lyrics-like scroll animation
+    (function(){
+      const msgs = Array.from(document.querySelectorAll('.msg'));
+      let ticking = false;
+      function update(){
+        const vh = window.innerHeight;
+        const centerY = vh / 2;
+        msgs.forEach(el => {
+          const rect = el.getBoundingClientRect();
+          const elCenter = rect.top + rect.height/2;
+          let delta = (elCenter - centerY) / centerY; // -1 .. 1 (roughly)
+          // clamp
+          if (delta > 2) delta = 2;
+          if (delta < -2) delta = -2;
+          // normalized closeness: 1 at center, 0 far away
+          const closeness = Math.max(0, 1 - Math.abs(delta));
+          // vertical separation (upper goes up, lower goes down)
+          const translateY = delta * (parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--max-translate')) || 38) * 1.5;
+          // horizontal convergence to center proportional to vertical distance
+          const side = el.classList.contains('right') ? 1 : -1;
+          const translateX = -side * Math.abs(delta) * 20;
+          // scale: smaller at center (converge), larger at edges (separate)
+          const scale = 1 - closeness * 0.05;
+          const opacity = 0.55 + closeness * 0.45;
+          // shadow depth
+          const shadowY = 6 + closeness * 8;
+          const shadowBlur = 16 + closeness * 10;
+          el.style.transform = `translate3d(${translateX}px, ${translateY}px, 0) scale(${scale})`;
+          el.style.opacity = opacity;
+          el.style.boxShadow = `0 ${shadowY}px ${shadowBlur}px rgba(2,6,23,${0.55 + closeness*0.15})`;
+
+          // Apply synced transform to avatar
+          const avatar = el.parentElement.querySelector('.avatar');
+          if (avatar) {
+            avatar.style.transform = `translate3d(${translateX}px, ${translateY}px, 0) scale(${scale})`;
+          }
+        });
+        ticking = false;
+      }
+      function onScroll(){
+        if(!ticking){
+          requestAnimationFrame(update);
+          ticking = true;
+        }
+      }
+      // initial update
+      update();
+      window.addEventListener('scroll', onScroll, {passive:true});
+      window.addEventListener('resize', onScroll);
+      // Optional: support wheel smoothness enhancement for trackpads
+      let lastTime = 0;
+      window.addEventListener('wheel', e => {
+        const now = performance.now();
+        // small inertial nudge when wheel events are frequent
+        if(now - lastTime < 120){
+          // trigger update quickly
+          onScroll();
+        }
+        lastTime = now;
+      }, {passive:true});
+    })();
+  </script>
+</body>
+</html>
