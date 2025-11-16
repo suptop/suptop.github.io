@@ -1,1 +1,142 @@
-gaoshi
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>个人主页</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --hover-color: gray;
+      --text-color: #1a1a1a;
+      --background-color: white;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: var(--background-color);
+      color: var(--text-color);
+      font-family: 'Georgia', serif;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    header {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 20px 40px;
+      font-size: 12px;
+      letter-spacing: 2px;
+      position: relative;
+    }
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    nav a {
+      color: var(--text-color);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    nav a:hover {
+      color: var(--hover-color);
+      text-decoration: underline;
+    }
+    .highlighted {
+      font-weight: bold;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .menu-toggle {
+      display: none;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+    }
+    .entry-links {
+      margin-top: 40px;
+      display: flex;
+      flex-direction: row;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .entry-links a {
+      display: inline-block;
+      padding: 10px 20px;
+      border: 1px solid var(--text-color);
+      text-decoration: none;
+      color: var(--text-color);
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+    .entry-links a:hover {
+      background-color: var(--text-color);
+      color: white;
+    }
+    @media (max-width: 768px) {
+      nav {
+        flex-direction: column;
+        align-items: flex-end;
+        position: absolute;
+        top: 60px;
+        right: 40px;
+        background: var(--background-color);
+        padding: 10px;
+        display: none;
+      }
+      nav.active {
+        display: flex;
+      }
+      .menu-toggle {
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <i class="fas fa-bars menu-toggle" onclick="toggleMenu()"></i>
+    <nav id="nav">
+      <a href="#">馆主主页</a>
+      <a href="Guanzhushoucang.html">馆主收藏</a>
+      <a href="#">关于酒馆</a>
+      <a href="#">馆风</a>
+      <a href="#"><span class="highlighted">馆员</span></a>
+      <a href="#">门客</a>
+      <a href="#">告示</a>
+      <a href="index00.html">旧馆</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="entry-links">
+      <a href="https://wpipx.github.io/">WPIPX</a>
+      <a href="https://nviic.github.io/">NVIIC</a>
+      <a href="renwu3.html">待定……</a>
+    </div>
+  </main>
+
+  <script>
+    function toggleMenu() {
+      const nav = document.getElementById('nav');
+      nav.classList.toggle('active');
+    }
+  </script>
+
+</body>
+</html>
